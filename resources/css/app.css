@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500;
+    }
+
+    .card-hover {
+        @apply transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/5;
+    }
+
+    .blob {
+        @apply absolute rounded-full blur-2xl opacity-50 pointer-events-none;
+    }
+}
+
+[data-animate] {
+    will-change: transform, opacity;
+}
