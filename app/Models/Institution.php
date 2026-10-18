@@ -25,7 +25,7 @@ class Institution extends Model
     public function careers(): BelongsToMany
     {
         return $this->belongsToMany(Career::class, 'institution_careers')
-            ->withPivot(['modality', 'requirements', 'cost_info'])
+            ->withPivot(['id', 'official_career_name', 'modality', 'requirements', 'cost_info'])
             ->withTimestamps();
     }
 

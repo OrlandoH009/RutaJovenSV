@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AcademicAreaController as AdminAcademicAreaController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\CareerController as AdminCareerController;
+use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\InstitutionController as AdminInstitutionController;
 use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -63,6 +64,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('institutions', AdminInstitutionController::class)->except(['show']);
     Route::post('institutions/{institution}/careers', [AdminInstitutionController::class, 'addCareer'])->name('institutions.careers.add');
     Route::delete('institutions/{institution}/careers/{career}', [AdminInstitutionController::class, 'removeCareer'])->name('institutions.careers.remove');
+
+    Route::get('institutions/{institution}/curriculum/{institutionCareer}', [AdminCurriculumController::class, 'edit'])->name('institutions.curriculum.edit');
+    Route::put('institutions/{institution}/curriculum/{institutionCareer}', [AdminCurriculumController::class, 'updateName'])->name('institutions.curriculum.update-name');
+    Route::post('institutions/{institution}/curriculum/{institutionCareer}/items', [AdminCurriculumController::class, 'storeItem'])->name('institutions.curriculum.items.store');
+    Route::delete('institutions/{institution}/curriculum/{institutionCareer}/items/{item}', [AdminCurriculumController::class, 'destroyItem'])->name('institutions.curriculum.items.destroy');
 
     Route::resource('questions', AdminQuestionController::class)->except(['show']);
     Route::post('questions/{question}/options', [AdminQuestionController::class, 'addOption'])->name('questions.options.add');

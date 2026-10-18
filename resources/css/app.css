@@ -14,8 +14,27 @@
     .blob {
         @apply absolute rounded-full blur-2xl opacity-50 pointer-events-none;
     }
+
+    .cta-glow {
+        @apply relative overflow-hidden;
+    }
+
+    .cta-glow::before {
+        content: '';
+        @apply absolute -inset-1 rounded-xl bg-white/20 blur-xl opacity-0 pointer-events-none;
+        animation: cta-pulse 2.8s ease-in-out infinite;
+    }
+}
+
+@keyframes cta-pulse {
+    0%, 100% { opacity: 0; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.02); }
 }
 
 [data-animate] {
     will-change: transform, opacity;
+}
+
+[x-cloak] {
+    display: none !important;
 }

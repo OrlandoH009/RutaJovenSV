@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\AcademicArea;
 use App\Models\Career;
+use App\Models\CurriculumItem;
 use App\Services\RecommendationService;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,12 @@ class CareerController extends Controller
     {
         $career->load(['academicArea', 'interestWeights', 'institutions']);
 
+        $curriculumByPivotId = CurriculumItem::whereIn('institution_career_id', $career->institutions->pluck('pivot.id'))
+            ->orderByRaw('cycle_number IS NULL, cycle_number')
+            ->orderBy('sort_order')
+            ->get()
+            ->groupBy('institution_career_id');
+
         $relatedCareers = collect();
         $user = auth()->user();
 
@@ -44,6 +51,7 @@ class CareerController extends Controller
             'career' => $career,
             'relatedCareers' => $relatedCareers,
             'isSaved' => $isSaved,
+            'curriculumByPivotId' => $curriculumByPivotId,
         ]);
     }
 }

@@ -1,23 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">
             {{ __('Profile') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div data-animate="up" class="p-4 sm:p-8 bg-white shadow-sm border border-gray-100 rounded-xl">
+            <div data-animate="up" class="p-4 sm:p-8 bg-white dark:bg-slate-800 shadow-sm border border-gray-100 dark:border-slate-700 rounded-xl">
                 @include('profile.partials.update-profile-information-form')
             </div>
 
-            <div data-animate="up" class="p-4 sm:p-8 bg-white shadow-sm border border-gray-100 rounded-xl">
+            <div data-animate="up" class="p-4 sm:p-8 bg-white dark:bg-slate-800 shadow-sm border border-gray-100 dark:border-slate-700 rounded-xl">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div data-animate="up" class="p-4 sm:p-8 bg-white shadow-sm border border-gray-100 rounded-xl">
+            <div data-animate="up" class="p-4 sm:p-8 bg-white dark:bg-slate-800 shadow-sm border border-gray-100 dark:border-slate-700 rounded-xl">
                 <div class="max-w-xl">
                     @include('profile.partials.delete-user-form')
                 </div>

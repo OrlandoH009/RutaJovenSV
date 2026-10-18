@@ -3,13 +3,13 @@
         <x-back-link :href="route('institutions.index')" label="Volver a instituciones" />
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div data-animate="hero" data-animate-delay="0.1">
-                <div class="text-xs uppercase tracking-wide text-emerald-600 font-semibold">{{ $institution->institution_type }}</div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $institution->name }}</h2>
+                <div class="text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400 font-semibold">{{ $institution->institution_type }}</div>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $institution->name }}</h2>
             </div>
             @auth
                 <form method="POST" action="{{ route('favorites.institutions.toggle', $institution) }}" data-animate="hero" data-animate-delay="0.2">
                     @csrf
-                    <button type="submit" class="px-4 py-2 rounded-md text-sm font-medium border {{ $isSaved ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-emerald-700 border-emerald-200 hover:bg-emerald-50' }}">
+                    <button type="submit" class="px-4 py-2 rounded-md text-sm font-medium border {{ $isSaved ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30' }}">
                         {{ $isSaved ? '★ Guardada' : '☆ Guardar' }}
                     </button>
                 </form>
@@ -19,30 +19,30 @@
 
     <div class="py-8">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div data-animate="up" class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+            <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
                 <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
-                        <dt class="font-medium text-gray-500">Ubicación</dt>
-                        <dd class="text-gray-900">{{ $institution->municipality }}, {{ $institution->department }}</dd>
+                        <dt class="font-medium text-gray-500 dark:text-slate-400">Ubicación</dt>
+                        <dd class="text-gray-900 dark:text-slate-100">{{ $institution->municipality }}, {{ $institution->department }}</dd>
                     </div>
                     @if ($institution->website)
                         <div>
-                            <dt class="font-medium text-gray-500">Sitio web</dt>
-                            <dd><a href="{{ $institution->website }}" target="_blank" rel="noopener" class="text-emerald-700 hover:underline">{{ $institution->website }}</a></dd>
+                            <dt class="font-medium text-gray-500 dark:text-slate-400">Sitio web</dt>
+                            <dd><a href="{{ $institution->website }}" target="_blank" rel="noopener" class="text-emerald-700 dark:text-emerald-400 hover:underline break-all">{{ $institution->website }}</a></dd>
                         </div>
                     @endif
                 </dl>
 
                 @if ($institution->latitude && $institution->longitude)
                     <div class="mt-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="flex items-center gap-1.5 text-xs font-medium text-gray-500">📍 Ubicación en el mapa</span>
+                        <div class="flex items-center justify-between gap-3 mb-2">
+                            <span class="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-slate-400">📍 Ubicación en el mapa</span>
                             <a href="https://www.openstreetmap.org/?mlat={{ $institution->latitude }}&mlon={{ $institution->longitude }}#map=16/{{ $institution->latitude }}/{{ $institution->longitude }}"
-                                target="_blank" rel="noopener" class="text-xs font-medium text-emerald-700 hover:underline">
+                                target="_blank" rel="noopener" class="text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:underline">
                                 Abrir mapa completo ↗
                             </a>
                         </div>
-                        <div id="institution-map" class="w-full h-56 sm:h-64 rounded-lg border border-gray-100"></div>
+                        <div id="institution-map" class="w-full h-56 sm:h-64 rounded-lg border border-gray-100 dark:border-slate-700"></div>
                     </div>
 
                     @once
@@ -74,18 +74,18 @@
                 @endif
             </div>
 
-            <div data-animate="up" class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-                <h3 class="font-semibold text-gray-900 mb-4">Carreras que ofrece</h3>
+            <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                <h3 class="font-semibold text-gray-900 dark:text-slate-100 mb-4">Carreras que ofrece</h3>
                 @forelse ($institution->careers as $career)
-                    <div data-animate="up" data-animate-group="careers" class="flex items-center justify-between py-3 border-b last:border-0 border-gray-100">
+                    <div data-animate="up" data-animate-group="careers" class="flex items-center justify-between gap-3 py-3 border-b last:border-0 border-gray-100 dark:border-slate-700">
                         <div>
-                            <a href="{{ route('careers.show', $career) }}" class="font-medium text-emerald-700 hover:underline">{{ $career->name }}</a>
-                            <div class="text-sm text-gray-500">{{ $career->academicArea?->name }}</div>
+                            <a href="{{ route('careers.show', $career) }}" class="font-medium text-emerald-700 dark:text-emerald-400 hover:underline">{{ $career->name }}</a>
+                            <div class="text-sm text-gray-500 dark:text-slate-400">{{ $career->academicArea?->name }}</div>
                         </div>
-                        <span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 capitalize">{{ $career->pivot->modality }}</span>
+                        <span class="shrink-0 text-xs px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 capitalize">{{ $career->pivot->modality }}</span>
                     </div>
                 @empty
-                    <p class="text-gray-500 text-sm">Aún no hay carreras registradas para esta institución.</p>
+                    <p class="text-gray-500 dark:text-slate-400 text-sm">Aún no hay carreras registradas para esta institución.</p>
                 @endforelse
             </div>
         </div>

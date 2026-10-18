@@ -22,6 +22,8 @@ Alpine.start();
  *  - [data-float]            → flotación suave e infinita (decorativos).
  *  - [data-counter="123"]    → cuenta desde 0 hasta el valor al entrar en
  *                              viewport.
+ *  - [data-bar="70"]         → barra de progreso que crece de 0% al valor
+ *                              indicado (%) al entrar en viewport.
  */
 function initScrollAnimations() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -110,6 +112,26 @@ function initScrollAnimations() {
             start: 'top bottom',
             once: true,
             onEnter: run,
+        });
+    });
+
+    document.querySelectorAll('[data-bar]').forEach((el) => {
+        const target = parseFloat(el.dataset.bar || '0');
+
+        if (reduceMotion) {
+            gsap.set(el, { width: target + '%' });
+            return;
+        }
+
+        gsap.set(el, { width: '0%' });
+
+        ScrollTrigger.create({
+            trigger: el,
+            start: 'top bottom',
+            once: true,
+            onEnter: () => {
+                gsap.to(el, { width: target + '%', duration: 1.2, ease: 'power2.out' });
+            },
         });
     });
 }

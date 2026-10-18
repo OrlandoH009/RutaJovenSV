@@ -12,10 +12,10 @@
             {{ strtoupper(substr($user->name, 0, 1)) }}
         </div>
         <div>
-            <h2 class="text-lg font-semibold text-gray-900">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-100">
                 {{ __('Información del perfil') }}
             </h2>
-            <p class="text-sm text-gray-500">
+            <p class="text-sm text-gray-500 dark:text-slate-400">
                 {{ __('Actualiza tu información personal y de contacto.') }}
             </p>
         </div>
@@ -43,16 +43,16 @@
 
                 @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                     <div>
-                        <p class="text-sm mt-2 text-gray-800">
+                        <p class="text-sm mt-2 text-gray-800 dark:text-slate-100">
                             {{ __('Your email address is unverified.') }}
 
-                            <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-slate-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-800 focus:ring-emerald-500">
                                 {{ __('Click here to re-send the verification email.') }}
                             </button>
                         </p>
 
                         @if (session('status') === 'verification-link-sent')
-                            <p class="mt-2 font-medium text-sm text-green-600">
+                            <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
                                 {{ __('A new verification link has been sent to your email address.') }}
                             </p>
                         @endif
@@ -61,13 +61,13 @@
             </div>
         </div>
 
-        <div class="border-t border-gray-100 pt-5">
-            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 mb-4">📍 Ubicación</p>
+        <div class="border-t border-gray-100 dark:border-slate-700 pt-5">
+            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 mb-4">📍 Ubicación</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                     <x-input-label for="department" value="Departamento" />
                     <select id="department" name="department" x-model="department" @change="municipality = ''"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Selecciona un departamento</option>
                         <template x-for="dept in departments" :key="dept">
                             <option :value="dept" x-text="dept" :selected="dept === department"></option>
@@ -79,7 +79,7 @@
                 <div>
                     <x-input-label for="municipality" value="Municipio" />
                     <select id="municipality" name="municipality" x-model="municipality" :disabled="! department"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 disabled:bg-gray-50 disabled:text-gray-400">
+                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-400 dark:disabled:text-slate-500">
                         <option value="">{{ __('Selecciona primero un departamento') }}</option>
                         <template x-for="m in municipalities" :key="m">
                             <option :value="m" x-text="m" :selected="m === municipality"></option>
@@ -90,12 +90,12 @@
             </div>
         </div>
 
-        <div class="border-t border-gray-100 pt-5">
-            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 mb-4">🎓 Formación académica</p>
+        <div class="border-t border-gray-100 dark:border-slate-700 pt-5">
+            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 mb-4">🎓 Formación académica</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                     <x-input-label for="academic_level" value="Nivel académico" />
-                    <select id="academic_level" name="academic_level" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <select id="academic_level" name="academic_level" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Selecciona una opción</option>
                         @foreach (['Cursando bachillerato', 'Bachillerato terminado', 'Estudios técnicos', 'Estudios universitarios'] as $level)
                             <option value="{{ $level }}" @selected(old('academic_level', $user->academic_level) === $level)>{{ $level }}</option>
@@ -106,7 +106,7 @@
 
                 <div>
                     <x-input-label for="bachillerato_type" value="Tipo de bachillerato" />
-                    <select id="bachillerato_type" name="bachillerato_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <select id="bachillerato_type" name="bachillerato_type" class="mt-1 block w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Selecciona una opción</option>
                         @foreach (['General', 'Técnico Vocacional Comercial', 'Técnico Vocacional Industrial', 'Técnico Vocacional Agropecuario', 'Técnico Vocacional en Salud', 'Técnico Vocacional en Informática', 'Bachillerato Nocturno', 'Otro'] as $type)
                             <option value="{{ $type }}" @selected(old('bachillerato_type', $user->bachillerato_type) === $type)>{{ $type }}</option>
@@ -117,7 +117,7 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-4 border-t border-gray-100 pt-5">
+        <div class="flex items-center gap-4 border-t border-gray-100 dark:border-slate-700 pt-5">
             <button type="submit" class="px-5 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 hover:-translate-y-0.5 transition-all shadow-sm">
                 {{ __('Guardar cambios') }}
             </button>
@@ -128,7 +128,7 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-emerald-700 font-medium"
+                    class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
                 >✓ {{ __('Guardado.') }}</p>
             @endif
         </div>

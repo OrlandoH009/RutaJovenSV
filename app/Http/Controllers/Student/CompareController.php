@@ -20,7 +20,11 @@ class CompareController extends Controller
             ? Career::with(['academicArea', 'interestWeights', 'institutions'])->whereIn('id', $ids)->get()->sortBy(fn ($c) => $ids->search($c->id))->values()
             : collect();
 
-        $availableCareers = Career::orderBy('name')->get(['id', 'name']);
+        $availableCareers = Career::with('academicArea:id,name')
+            ->orderBy('name')
+            ->get(['id', 'name', 'academic_area_id'])
+            ->groupBy(fn ($career) => $career->academicArea?->name ?? 'Otras')
+            ->sortKeys();
 
         return view('compare.index', [
             'careers' => $careers,
