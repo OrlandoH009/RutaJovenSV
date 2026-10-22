@@ -1,12 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $institution->exists ? 'Editar institución' : 'Nueva institución' }}</h2>
+        <x-back-link :href="route('admin.institutions.index')" label="Volver a instituciones" />
+        <h2 class="display text-3xl sm:text-4xl">{{ $institution->exists ? 'Editar institución' : 'Nueva institución' }}</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" />
             @endif
 
             <form method="POST" action="{{ $institution->exists ? route('admin.institutions.update', $institution) : route('admin.institutions.store') }}" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm space-y-4">
@@ -16,7 +17,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Nombre</label>
                     <input type="text" name="name" value="{{ old('name', $institution->name) }}" required class="w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                    @error('name') <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
+                    @error('name') <p data-error class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -50,8 +51,8 @@
                         <input type="number" step="0.0000001" name="longitude" value="{{ old('longitude', $institution->longitude) }}" placeholder="Longitud, ej. -89.2182"
                             class="w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                     </div>
-                    @error('latitude') <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
-                    @error('longitude') <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
+                    @error('latitude') <p data-error class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
+                    @error('longitude') <p data-error class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="flex justify-between items-center pt-2">
@@ -72,7 +73,7 @@
                             </div>
                             <div class="flex items-center gap-4">
                                 <a href="{{ route('admin.institutions.curriculum.edit', [$institution, $career->pivot->id]) }}" class="text-sm text-emerald-700 dark:text-emerald-400 hover:underline">Ver pensum</a>
-                                <form method="POST" action="{{ route('admin.institutions.careers.remove', [$institution, $career]) }}" onsubmit="return confirm('¿Quitar esta carrera de la institución?');">
+                                <form method="POST" action="{{ route('admin.institutions.careers.remove', [$institution, $career]) }}" data-confirm="¿Quitar esta carrera de la institución?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-sm text-red-600 dark:text-red-400 hover:underline">Quitar</button>

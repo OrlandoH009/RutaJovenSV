@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-back-link :href="route('admin.institutions.edit', $institution)" label="Volver a {{ $institution->name }}" />
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">
+        <h2 class="display text-3xl sm:text-4xl">
             Pensum · {{ $institutionCareer->career->name }}
         </h2>
         <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ $institution->name }} · <span class="capitalize">{{ $institutionCareer->modality }}</span></p>
@@ -10,7 +10,7 @@
     <div class="py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" />
             @endif
 
             <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
@@ -41,7 +41,7 @@
                                         <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 ml-2">{{ $item->credits }} UV</span>
                                     @endif
                                 </div>
-                                <form method="POST" action="{{ route('admin.institutions.curriculum.items.destroy', [$institution, $institutionCareer, $item]) }}" onsubmit="return confirm('¿Eliminar esta materia del pensum?');">
+                                <form method="POST" action="{{ route('admin.institutions.curriculum.items.destroy', [$institution, $institutionCareer, $item]) }}" data-confirm="¿Eliminar esta materia del pensum?">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-sm text-red-600 dark:text-red-400 hover:underline">Eliminar</button>

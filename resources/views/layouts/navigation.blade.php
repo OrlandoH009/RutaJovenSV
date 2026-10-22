@@ -1,21 +1,24 @@
+<div class="sticky top-0 z-40 px-3 pt-3 sm:px-4">
 <nav
-    x-data="{ open: false, dark: document.documentElement.classList.contains('dark') }"
-    class="bg-white border-b border-gray-100 dark:bg-slate-900 dark:border-slate-700"
+    x-data="{ open: false, scrolled: false, dark: document.documentElement.classList.contains('dark') }"
+    @scroll.window="scrolled = window.scrollY > 24"
+    :class="scrolled ? 'shadow-soft' : ''"
+    class="mx-auto max-w-6xl rounded-2xl border border-gray-200 bg-gray-50/80 backdrop-blur-xl transition-shadow duration-300 dark:border-slate-700 dark:bg-slate-900/80"
 >
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+    <div class="px-4 sm:px-5">
+        <div class="flex justify-between h-14">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center gap-2">
-                        <x-application-logo class="block h-9 w-auto fill-current text-emerald-600" />
-                        <span class="font-semibold text-gray-800 hidden sm:inline dark:text-slate-100">RutaJoven SV</span>
+                        <x-application-logo class="block h-8 w-8" />
+                        <span class="font-display text-xl text-gray-900 hidden sm:inline dark:text-slate-100">RutaJoven SV</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-4 lg:space-x-6 sm:-my-px sm:ms-6 sm:flex">
+                <div class="hidden items-center gap-0.5 sm:ms-6 sm:flex">
                     @auth
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
@@ -55,7 +58,7 @@
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150 dark:text-slate-400 dark:bg-slate-900 dark:hover:text-slate-200">
+                            <button class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-xl text-gray-600 hover:bg-gray-200/60 hover:text-gray-900 focus:outline-none transition duration-150 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100">
                                 <div class="max-w-[8rem] truncate">{{ Auth::user()->name }}</div>
 
                                 <div class="ms-1">
@@ -67,6 +70,12 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            <x-dropdown-link :href="route('favorites.index')">
+
+                                {{ __('Mis favoritos') }}
+
+                            </x-dropdown-link>
+
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Mi perfil') }}
                             </x-dropdown-link>
@@ -84,9 +93,9 @@
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <div class="flex items-center gap-4">
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-slate-100">{{ __('Iniciar sesión') }}</a>
-                        <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">{{ __('Crear cuenta') }}</a>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('login') }}" class="px-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-slate-100">{{ __('Iniciar sesión') }}</a>
+                        <a href="{{ route('register') }}" class="btn-primary !py-2">{{ __('Crear cuenta') }}</a>
                     </div>
                 @endauth
             </div>
@@ -95,7 +104,7 @@
             <div class="-me-2 flex items-center gap-1 sm:hidden">
                 <x-theme-toggle />
 
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 dark:focus:bg-slate-800">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-200/60 focus:outline-none transition duration-150 ease-in-out dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 dark:focus:bg-slate-800">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -106,8 +115,8 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden px-2 pb-2">
+        <div class="pt-1 pb-3 space-y-1">
             @auth
                 <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                     {{ __('Dashboard') }}
@@ -148,6 +157,12 @@
                 </div>
 
                 <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('favorites.index')">
+
+                        {{ __('Mis favoritos') }}
+
+                    </x-responsive-nav-link>
+
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Mi perfil') }}
                     </x-responsive-nav-link>
@@ -172,3 +187,4 @@
         </div>
     </div>
 </nav>
+</div>

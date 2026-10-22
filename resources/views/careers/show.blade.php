@@ -4,16 +4,11 @@
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div data-animate="hero" data-animate-delay="0.1">
                 <div class="text-xs uppercase tracking-wide text-emerald-600 font-semibold">{{ $career->academicArea?->name }}</div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $career->name }}</h2>
+                <h2 class="display text-3xl sm:text-4xl">{{ $career->name }}</h2>
             </div>
             @auth
                 <div class="flex gap-2">
-                    <form method="POST" action="{{ route('favorites.careers.toggle', $career) }}">
-                        @csrf
-                        <button type="submit" class="px-4 py-2 rounded-md text-sm font-medium border {{ $isSaved ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-emerald-700 border-emerald-200 hover:bg-emerald-50 dark:bg-slate-800 dark:text-emerald-400 dark:border-emerald-800 dark:hover:bg-slate-700' }}">
-                            {{ $isSaved ? '★ Guardada' : '☆ Guardar' }}
-                        </button>
-                    </form>
+                    <x-like-button :action="route('favorites.careers.toggle', $career)" :liked="$isSaved" text />
                     <form method="POST" action="{{ route('my-route.items.add') }}">
                         @csrf
                         <input type="hidden" name="career_id" value="{{ $career->id }}">
@@ -23,6 +18,13 @@
                     </form>
                 </div>
             @endauth
+
+            @guest
+                <x-like-button guest text />
+
+                <x-login-prompt-modal />
+
+            @endguest
         </div>
     </x-slot>
 

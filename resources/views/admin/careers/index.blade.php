@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Carreras</h2>
+        <x-back-link :href="route('admin.dashboard')" label="Volver al panel" />
+        <h2 class="display text-3xl sm:text-4xl">Carreras</h2>
     </x-slot>
 
     <div class="py-8">
@@ -8,7 +9,7 @@
             @include('admin.partials.subnav')
 
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm mb-4">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" class="mb-4" />
             @endif
 
             <div class="flex justify-between items-center mb-4 gap-4 flex-wrap">
@@ -34,7 +35,7 @@
                                 <td class="p-4">{{ $career->academicArea?->name }}</td>
                                 <td class="p-4 text-right whitespace-nowrap space-x-3">
                                     <a href="{{ route('admin.careers.edit', $career) }}" class="text-emerald-700 dark:text-emerald-400 hover:underline">Editar</a>
-                                    <form method="POST" action="{{ route('admin.careers.destroy', $career) }}" class="inline" onsubmit="return confirm('¿Eliminar esta carrera?');">
+                                    <form method="POST" action="{{ route('admin.careers.destroy', $career) }}" class="inline" data-confirm="¿Eliminar esta carrera?">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 dark:text-red-400 hover:underline">Eliminar</button>

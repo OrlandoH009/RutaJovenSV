@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Comparador de carreras</h2>
+        <x-back-link :href="route('home')" label="Volver al inicio" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">Comparador de carreras</h2>
     </x-slot>
 
     <div class="py-8">

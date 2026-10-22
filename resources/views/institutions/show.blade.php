@@ -4,16 +4,18 @@
         <div class="flex items-center justify-between flex-wrap gap-4">
             <div data-animate="hero" data-animate-delay="0.1">
                 <div class="text-xs uppercase tracking-wide text-emerald-600 dark:text-emerald-400 font-semibold">{{ $institution->institution_type }}</div>
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $institution->name }}</h2>
+                <h2 class="display text-3xl sm:text-4xl">{{ $institution->name }}</h2>
             </div>
             @auth
-                <form method="POST" action="{{ route('favorites.institutions.toggle', $institution) }}" data-animate="hero" data-animate-delay="0.2">
-                    @csrf
-                    <button type="submit" class="px-4 py-2 rounded-md text-sm font-medium border {{ $isSaved ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30' }}">
-                        {{ $isSaved ? '★ Guardada' : '☆ Guardar' }}
-                    </button>
-                </form>
+                <x-like-button :action="route('favorites.institutions.toggle', $institution)" :liked="$isSaved" text data-animate="hero" data-animate-delay="0.2" />
             @endauth
+
+            @guest
+                <x-like-button guest text />
+
+                <x-login-prompt-modal />
+
+            @endguest
         </div>
     </x-slot>
 

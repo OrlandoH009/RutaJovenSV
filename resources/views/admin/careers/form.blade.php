@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $career->exists ? 'Editar carrera' : 'Nueva carrera' }}</h2>
+        <x-back-link :href="route('admin.careers.index')" label="Volver a carreras" />
+        <h2 class="display text-3xl sm:text-4xl">{{ $career->exists ? 'Editar carrera' : 'Nueva carrera' }}</h2>
     </x-slot>
 
     <div class="py-8">
@@ -13,7 +14,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Nombre</label>
                         <input type="text" name="name" value="{{ old('name', $career->name) }}" required class="w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                        @error('name') <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
+                        @error('name') <p data-error class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Área académica</label>

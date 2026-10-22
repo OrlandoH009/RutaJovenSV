@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Usuarios</h2>
+        <x-back-link :href="route('admin.dashboard')" label="Volver al panel" />
+        <h2 class="display text-3xl sm:text-4xl">Usuarios</h2>
     </x-slot>
 
     <div class="py-8">
@@ -8,7 +9,7 @@
             @include('admin.partials.subnav')
 
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm mb-4">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" class="mb-4" />
             @endif
             @if ($errors->any())
                 <div class="p-4 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 rounded-lg text-sm mb-4">{{ $errors->first() }}</div>

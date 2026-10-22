@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <x-back-link :href="route('login')" label="Volver a iniciar sesión" />
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 

@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <x-back-link :href="route('home')" label="Volver al inicio" />
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -27,7 +29,7 @@
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 dark:border-slate-600 dark:bg-slate-800 text-emerald-600 shadow-sm focus:ring-emerald-500" name="remember">
+                <input id="remember_me" type="checkbox" class="t-checkbox rounded border-gray-300 dark:border-slate-600 dark:bg-slate-800 text-emerald-600 shadow-sm focus:ring-emerald-500" name="remember">
                 <span class="ms-2 text-sm text-gray-600 dark:text-slate-400">{{ __('Remember me') }}</span>
             </label>
         </div>

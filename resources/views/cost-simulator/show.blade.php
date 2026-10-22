@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Simulador de costos</h2>
+        <x-back-link :href="route('dashboard')" label="Volver al dashboard" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">Simulador de costos</h2>
     </x-slot>
 
     <div class="py-8">

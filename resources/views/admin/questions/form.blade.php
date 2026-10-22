@@ -1,12 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">{{ $question->exists ? 'Editar pregunta' : 'Nueva pregunta' }}</h2>
+        <x-back-link :href="route('admin.questions.index')" label="Volver a preguntas" />
+        <h2 class="display text-3xl sm:text-4xl">{{ $question->exists ? 'Editar pregunta' : 'Nueva pregunta' }}</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" />
             @endif
 
             <form method="POST" action="{{ $question->exists ? route('admin.questions.update', $question) : route('admin.questions.store') }}" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm space-y-4">
@@ -16,7 +17,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Texto de la pregunta</label>
                     <input type="text" name="text" value="{{ old('text', $question->text) }}" required class="w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                    @error('text') <p class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
+                    @error('text') <p data-error class="text-sm text-red-600 dark:text-red-400 mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
@@ -42,7 +43,7 @@
                                     {{ collect($option->interest_weights)->map(fn ($w, $k) => "$k: $w")->implode(', ') }}
                                 </span>
                             </div>
-                            <form method="POST" action="{{ route('admin.questions.options.remove', [$question, $option]) }}" onsubmit="return confirm('¿Eliminar esta opción?');">
+                            <form method="POST" action="{{ route('admin.questions.options.remove', [$question, $option]) }}" data-confirm="¿Eliminar esta opción?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-sm text-red-600 dark:text-red-400 hover:underline">Eliminar</button>

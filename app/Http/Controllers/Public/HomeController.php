@@ -16,6 +16,7 @@ class HomeController extends Controller
             'careersCount' => Career::count(),
             'institutionsCount' => Institution::count(),
             'featuredCareers' => Career::with('academicArea')->inRandomOrder()->limit(4)->get(),
+            'institutionNames' => Institution::orderBy('name')->limit(14)->pluck('name'),
         ]);
     }
 }

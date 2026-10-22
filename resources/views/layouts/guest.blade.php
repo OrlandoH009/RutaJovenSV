@@ -9,22 +9,21 @@
 
         @include('layouts.partials.theme-script')
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        @include('layouts.partials.fonts')
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased dark:text-slate-100">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-slate-900">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500 dark:text-slate-400" />
-                </a>
-            </div>
+        <div class="relative min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-100 dark:bg-slate-900">
+            <div class="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[40rem]" aria-hidden="true"></div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg dark:bg-slate-800 dark:shadow-none dark:ring-1 dark:ring-slate-700">
+            <a href="/" class="relative flex items-center gap-2" data-animate="hero">
+                <x-application-logo class="h-10 w-10" />
+                <span class="font-display text-2xl text-gray-900 dark:text-slate-100">RutaJoven SV</span>
+            </a>
+
+            <div data-animate="hero" data-animate-delay="0.1" class="surface relative mt-6 w-full max-w-md px-6 py-6 sm:px-8">
                 {{ $slot }}
             </div>
         </div>

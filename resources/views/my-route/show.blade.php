@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Mi Ruta</h2>
+        <x-back-link :href="route('dashboard')" label="Volver al dashboard" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">Mi Ruta</h2>
     </x-slot>
 
     <div class="py-8">
@@ -12,7 +13,7 @@
             </p>
 
             @if (session('status'))
-                <div data-animate="hero" class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300 rounded-lg text-sm mb-6">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" class="mb-6" data-animate="hero" />
             @endif
             @if ($errors->any())
                 <div data-animate="hero" class="p-4 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 rounded-lg text-sm mb-6">
@@ -83,7 +84,7 @@
                                                     <div class="text-xs text-gray-500 dark:text-slate-400">{{ $item->career ? 'Carrera' : 'Institución' }}</div>
                                                 </div>
                                             </div>
-                                            <form method="POST" action="{{ route('my-route.items.remove', $item) }}" class="shrink-0">
+                                            <form method="POST" action="{{ route('my-route.items.remove', $item) }}" class="shrink-0" data-confirm="¿Quitar esto de tu ruta?">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-sm text-gray-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition">Quitar</button>

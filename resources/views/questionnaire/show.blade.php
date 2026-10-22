@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Cuestionario de intereses</h2>
+        <x-back-link :href="route('dashboard')" label="Volver al dashboard" />
+        <h2 class="display text-3xl sm:text-4xl">Cuestionario de intereses</h2>
     </x-slot>
 
     <div class="py-8">

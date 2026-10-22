@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/perfil-intereses', [InterestProfileController::class, 'show'])->name('interest-profile.show');
 
+    Route::get('/favoritos', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favoritos/carreras/{career}', [FavoriteController::class, 'toggleCareer'])->name('favorites.careers.toggle');
     Route::post('/favoritos/instituciones/{institution}', [FavoriteController::class, 'toggleInstitution'])->name('favorites.institutions.toggle');
 

@@ -9,8 +9,7 @@
         @include('layouts.partials.theme-script')
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+        @include('layouts.partials.fonts')
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -22,7 +21,7 @@
 
             <div class="relative z-10 w-full max-w-lg text-center">
                 <a href="/" class="inline-block mb-8" data-animate="hero">
-                    <x-application-logo class="w-16 h-16 fill-current text-emerald-600 dark:text-emerald-400 mx-auto" />
+                    <x-application-logo class="w-16 h-16 mx-auto" />
                 </a>
 
                 <p data-animate="hero" data-animate-delay="0.1" class="text-gradient text-7xl sm:text-8xl font-extrabold tracking-tight">

@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <x-back-link :href="route('home')" label="Volver al inicio" />
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

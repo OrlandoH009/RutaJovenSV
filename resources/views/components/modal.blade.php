@@ -51,27 +51,29 @@ $maxWidth = [
 >
     <div
         x-show="show"
-        class="fixed inset-0 transform transition-all"
+        class="fixed inset-0"
         x-on:click="show = false"
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
+        x-transition:enter="t-backdrop-enter"
+        x-transition:enter-start="t-backdrop-from"
+        x-transition:enter-end="t-backdrop-to"
+        x-transition:leave="t-backdrop-leave"
+        x-transition:leave-start="t-backdrop-to"
+        x-transition:leave-end="t-backdrop-from"
     >
-        <div class="absolute inset-0 bg-gray-500 dark:bg-slate-950 opacity-75"></div>
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm dark:bg-slate-950/70"></div>
     </div>
 
     <div
         x-show="show"
-        class="mb-6 bg-white dark:bg-slate-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto"
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        role="dialog"
+        aria-modal="true"
+        class="mb-6 bg-gray-50 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl ring-1 ring-gray-200 dark:ring-slate-700 sm:mt-[12vh] sm:w-full {{ $maxWidth }} sm:mx-auto"
+        x-transition:enter="t-modal-enter"
+        x-transition:enter-start="t-modal-from"
+        x-transition:enter-end="t-modal-to"
+        x-transition:leave="t-modal-leave"
+        x-transition:leave-start="t-modal-to"
+        x-transition:leave-end="t-modal-from"
     >
         {{ $slot }}
     </div>

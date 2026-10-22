@@ -1,12 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Buscar</h2>
+        <x-back-link :href="route('home')" label="Volver al inicio" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">Buscar</h2>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <form method="GET" data-animate="hero" data-animate-delay="0.1" class="mb-8">
-                <input type="text" name="q" value="{{ $query }}" placeholder="Buscar carreras o instituciones..." autofocus
+                <input data-clearable type="text" name="q" value="{{ $query }}" placeholder="Buscar carreras o instituciones..." autofocus
                     class="w-full rounded-md border-gray-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-lg py-3">
             </form>
 

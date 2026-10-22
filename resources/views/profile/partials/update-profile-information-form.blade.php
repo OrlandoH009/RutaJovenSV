@@ -128,8 +128,8 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-emerald-700 dark:text-emerald-400 font-medium"
-                >✓ {{ __('Guardado.') }}</p>
+                    class="inline-flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400 font-medium"
+                ><x-success-check class="h-4 w-4" />{{ __('Guardado.') }}</p>
             @endif
         </div>
     </form>

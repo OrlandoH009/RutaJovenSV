@@ -23,6 +23,7 @@ class CareerController extends Controller
         return view('careers.index', [
             'careers' => $careers,
             'areas' => AcademicArea::orderBy('name')->get(),
+            'savedIds' => auth()->user()?->savedCareers()->pluck('career_id') ?? collect(),
         ]);
     }
 

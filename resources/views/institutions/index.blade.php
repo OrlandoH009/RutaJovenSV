@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Instituciones educativas</h2>
+        <x-back-link :href="route('home')" label="Volver al inicio" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">Instituciones educativas</h2>
     </x-slot>
 
     <div class="py-8">
@@ -8,7 +9,7 @@
             <form method="GET" data-animate="hero" data-animate-delay="0.1" class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm mb-6 flex flex-wrap gap-4 items-end">
                 <div class="flex-1 min-w-[200px] w-full sm:w-auto">
                     <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Buscar</label>
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Nombre de la institución..." class="w-full rounded-md border-gray-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <input data-clearable type="text" name="q" value="{{ request('q') }}" placeholder="Nombre de la institución..." class="w-full rounded-md border-gray-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                 </div>
                 <div class="min-w-[180px] w-full sm:w-auto">
                     <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Departamento</label>

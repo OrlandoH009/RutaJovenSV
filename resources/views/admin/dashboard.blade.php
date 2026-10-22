@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Panel administrativo</h2>
+        <x-back-link :href="route('home')" label="Volver al inicio" />
+        <h2 class="display text-3xl sm:text-4xl">Panel administrativo</h2>
     </x-slot>
 
     <div class="py-8">

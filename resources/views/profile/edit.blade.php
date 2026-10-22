@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 data-animate="hero" class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">
+        <x-back-link :href="route('dashboard')" label="Volver al dashboard" />
+        <h2 data-animate="words" class="display text-3xl sm:text-4xl">
             {{ __('Profile') }}
         </h2>
     </x-slot>

@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-slate-100 leading-tight">Preguntas del cuestionario</h2>
+        <x-back-link :href="route('admin.dashboard')" label="Volver al panel" />
+        <h2 class="display text-3xl sm:text-4xl">Preguntas del cuestionario</h2>
     </x-slot>
 
     <div class="py-8">
@@ -8,7 +9,7 @@
             @include('admin.partials.subnav')
 
             @if (session('status'))
-                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-400 rounded-lg text-sm mb-4">{{ session('status') }}</div>
+                <x-flash-success :message="session('status')" class="mb-4" />
             @endif
 
             <div class="flex justify-end mb-4">
@@ -33,7 +34,7 @@
                                 <td class="p-4">{{ $question->options_count }}</td>
                                 <td class="p-4 text-right whitespace-nowrap space-x-3">
                                     <a href="{{ route('admin.questions.edit', $question) }}" class="text-emerald-700 dark:text-emerald-400 hover:underline">Editar</a>
-                                    <form method="POST" action="{{ route('admin.questions.destroy', $question) }}" class="inline" onsubmit="return confirm('¿Eliminar esta pregunta?');">
+                                    <form method="POST" action="{{ route('admin.questions.destroy', $question) }}" class="inline" data-confirm="¿Eliminar esta pregunta?">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 dark:text-red-400 hover:underline">Eliminar</button>
