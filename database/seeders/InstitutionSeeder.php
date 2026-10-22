@@ -424,5 +424,7 @@ class InstitutionSeeder extends Seeder
                 ]);
             }
         }
+
+        Institution::linkCampuses();
     }
 }

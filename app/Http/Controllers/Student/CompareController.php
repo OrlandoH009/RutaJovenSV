@@ -17,7 +17,7 @@ class CompareController extends Controller
             ->take(3);
 
         $careers = $ids->isNotEmpty()
-            ? Career::with(['academicArea', 'interestWeights', 'institutions'])->whereIn('id', $ids)->get()->sortBy(fn ($c) => $ids->search($c->id))->values()
+            ? Career::with(['academicArea', 'interestWeights', 'institutions' => fn ($q) => $q->higherEducation()])->whereIn('id', $ids)->get()->sortBy(fn ($c) => $ids->search($c->id))->values()
             : collect();
 
         $availableCareers = Career::with('academicArea:id,name')

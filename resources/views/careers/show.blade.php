@@ -31,48 +31,71 @@
     <div class="py-8">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                <p class="text-gray-700 dark:text-slate-300">{{ $career->description }}</p>
-
-                <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-sm">
-                    @if ($career->duration_text)
-                        <div>
-                            <dt class="font-medium text-gray-500 dark:text-slate-400">Duración aproximada</dt>
-                            <dd class="text-gray-900 dark:text-slate-100">{{ $career->duration_text }}</dd>
+                <div class="flex items-start gap-4">
+                    <x-career-icon :career="$career" size="h-14 w-14 text-3xl" />
+                    <div class="min-w-0">
+                        <p class="text-gray-700 dark:text-slate-300">{{ $career->description }}</p>
+                        <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                            @if ($career->academicArea)
+                                <span class="rounded-full bg-emerald-50 px-3 py-1 font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">🏷️ {{ $career->academicArea->name }}</span>
+                            @endif
+                            @if ($career->duration_text)
+                                <span class="rounded-full bg-gray-100 px-3 py-1 font-medium text-gray-600 dark:bg-slate-700 dark:text-slate-300">⏱️ {{ $career->duration_text }}</span>
+                            @endif
                         </div>
-                    @endif
-                    @if ($career->skills)
-                        <div>
-                            <dt class="font-medium text-gray-500 dark:text-slate-400">Habilidades relacionadas</dt>
-                            <dd class="text-gray-900 dark:text-slate-100">{{ $career->skills }}</dd>
-                        </div>
-                    @endif
-                    @if ($career->typical_activities)
-                        <div>
-                            <dt class="font-medium text-gray-500 dark:text-slate-400">Actividades típicas</dt>
-                            <dd class="text-gray-900 dark:text-slate-100">{{ $career->typical_activities }}</dd>
-                        </div>
-                    @endif
-                    @if ($career->professional_fields)
-                        <div>
-                            <dt class="font-medium text-gray-500 dark:text-slate-400">Posibles áreas profesionales</dt>
-                            <dd class="text-gray-900 dark:text-slate-100">{{ $career->professional_fields }}</dd>
-                        </div>
-                    @endif
-                </dl>
+                    </div>
+                </div>
             </div>
 
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                @if ($career->activities_list)
+                    <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                        <h3 class="mb-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-slate-100"><span aria-hidden="true">🛠️</span> Lo que harías en el día a día</h3>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-slate-300">
+                            @foreach ($career->activities_list as $item)
+                                <li class="flex gap-2"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500"></span><span>{{ $item }}</span></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @if ($career->fields_list)
+                    <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                        <h3 class="mb-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-slate-100"><span aria-hidden="true">💼</span> Dónde podrías trabajar</h3>
+                        <ul class="space-y-2 text-sm text-gray-700 dark:text-slate-300">
+                            @foreach ($career->fields_list as $item)
+                                <li class="flex gap-2"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500"></span><span>{{ $item }}</span></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+
+            @if ($career->skills_list)
+                <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                    <h3 class="mb-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-slate-100"><span aria-hidden="true">⭐</span> Habilidades que te ayudan</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach ($career->skills_list as $item)
+                            <span class="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-400">{{ $item }}</span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
             <div data-animate="up" class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm">
                 <h3 class="font-semibold text-gray-900 dark:text-slate-100 mb-4">¿Dónde puedo estudiar {{ $career->name }}?</h3>
                 @forelse ($career->institutions as $institution)
                     @php $pensum = $curriculumByPivotId->get($institution->pivot->id); @endphp
                     <div data-animate="up" data-animate-group="institutions" class="py-3 border-b last:border-0 border-gray-100 dark:border-slate-700" x-data="{ open: false }">
                         <div class="flex items-center justify-between flex-wrap gap-2">
-                            <div>
-                                <a href="{{ route('institutions.show', $institution) }}" class="font-medium text-emerald-700 dark:text-emerald-400 hover:underline">{{ $institution->name }}</a>
-                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $institution->department }}</div>
-                                @if ($institution->pivot->official_career_name)
-                                    <div class="text-xs text-gray-400 dark:text-slate-500 italic">Nombre oficial: {{ $institution->pivot->official_career_name }}</div>
-                                @endif
+                            <div class="flex items-center gap-3">
+                                <x-institution-logo :institution="$institution" size="h-12 w-12" />
+                                <div>
+                                    <a href="{{ route('institutions.show', [$institution, 'career' => $career->slug]) }}" class="font-medium text-emerald-700 dark:text-emerald-400 hover:underline" title="{{ $institution->name }}">{{ $institution->short_name }}</a>
+                                    <div class="text-sm text-gray-500 dark:text-slate-400">{{ $institution->department }}</div>
+                                    @if ($institution->pivot->official_career_name)
+                                        <div class="text-xs text-gray-400 dark:text-slate-500 italic">Nombre oficial: {{ $institution->pivot->official_career_name }}</div>
+                                    @endif
+                                </div>
                             </div>
                             <div class="flex items-center gap-3">
                                 <span class="text-xs px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 capitalize">{{ $institution->pivot->modality }}</span>
@@ -85,22 +108,53 @@
                         </div>
 
                         @if ($pensum)
-                            <div x-show="open" x-cloak class="mt-3 pl-1 border-l-2 border-emerald-100 dark:border-emerald-900 space-y-3">
-                                @foreach ($pensum->groupBy('cycle_label') as $cycleLabel => $items)
-                                    <div class="pl-3">
-                                        <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-slate-500 mb-1">{{ $cycleLabel }}</h4>
-                                        <ul class="text-sm text-gray-700 dark:text-slate-300 space-y-0.5">
-                                            @foreach ($items as $item)
-                                                <li class="flex items-center justify-between gap-2">
-                                                    <span>{{ $item->subject_name }}</span>
-                                                    @if ($item->credits)
-                                                        <span class="text-xs text-gray-400 dark:text-slate-500 shrink-0">{{ $item->credits }} UV</span>
+                            @php
+                                $cycles = $pensum->groupBy('cycle_label');
+                                $totalUv = $pensum->sum('credits');
+                            @endphp
+                            <div x-show="open" x-cloak class="mt-4">
+                                <div class="mb-4 flex flex-wrap gap-2 text-xs">
+                                    <span class="rounded-full bg-emerald-50 px-3 py-1 font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">{{ $cycles->count() }} ciclos</span>
+                                    <span class="rounded-full bg-gray-100 px-3 py-1 font-medium text-gray-600 dark:bg-slate-700 dark:text-slate-300">{{ $pensum->count() }} materias</span>
+                                    @if ($totalUv)
+                                        <span class="rounded-full bg-gray-100 px-3 py-1 font-medium text-gray-600 dark:bg-slate-700 dark:text-slate-300">{{ $totalUv }} UV</span>
+                                    @endif
+                                </div>
+
+                                {{-- Ruta por ciclos: scroll horizontal con línea que conecta cada ciclo --}}
+                                <div class="-mx-2 flex snap-x gap-4 overflow-x-auto px-2 pb-3">
+                                    @foreach ($cycles as $cycleLabel => $items)
+                                        <div class="w-56 shrink-0 snap-start">
+                                            <div class="relative mb-3 flex items-center">
+                                                <span class="z-10 flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white shadow-sm">{{ $loop->iteration }}</span>
+                                                @unless ($loop->last)
+                                                    <span class="absolute left-8 right-[-1rem] h-0.5 bg-gradient-to-r from-emerald-500 to-emerald-200 dark:to-emerald-900"></span>
+                                                @endunless
+                                            </div>
+                                            <div class="rounded-xl border border-gray-100 bg-gray-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
+                                                <div class="mb-2 flex items-baseline justify-between gap-2">
+                                                    <h4 class="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">{{ $cycleLabel }}</h4>
+                                                    @if ($items->sum('credits'))
+                                                        <span class="text-[11px] text-gray-400 dark:text-slate-500">{{ $items->sum('credits') }} UV</span>
                                                     @endif
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endforeach
+                                                </div>
+                                                <ul class="space-y-1.5">
+                                                    @foreach ($items as $item)
+                                                        <li class="rounded-lg border border-gray-100 bg-white px-2.5 py-1.5 text-sm text-gray-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                                                            <div class="leading-snug">{{ $item->subject_name }}</div>
+                                                            @if ($item->credits)
+                                                                <div class="mt-1 flex items-center gap-1.5">
+                                                                    <span class="h-1 flex-1 overflow-hidden rounded-full bg-gray-100 dark:bg-slate-700"><span class="block h-full rounded-full bg-emerald-500" style="width: {{ min(100, $item->credits * 12.5) }}%"></span></span>
+                                                                    <span class="shrink-0 text-[11px] text-gray-400 dark:text-slate-500">{{ $item->credits }} UV</span>
+                                                                </div>
+                                                            @endif
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
                     </div>

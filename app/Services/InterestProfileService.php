@@ -3,16 +3,13 @@
 namespace App\Services;
 
 use App\Models\InterestProfile;
-use App\Models\Question;
 use App\Models\User;
 
 class InterestProfileService
 {
     public function computeForUser(User $user): InterestProfile
     {
-        $maxPossible = $this->maxPossibleScores();
-
-        $actual = array_fill_keys(array_keys($maxPossible), 0);
+        $actual = array_fill_keys(array_keys(config('interests.labels')), 0);
 
         $answers = $user->answers()->with('option')->get();
 
@@ -22,10 +19,13 @@ class InterestProfileService
             }
         }
 
+        // El eje con más puntos del usuario es 100%; los demás son proporcionales a él.
+        $top = max($actual);
+
         $scores = [];
 
-        foreach ($maxPossible as $key => $max) {
-            $scores[$key] = $max > 0 ? (int) round(min($actual[$key] ?? 0, $max) / $max * 100) : 0;
+        foreach ($actual as $key => $points) {
+            $scores[$key] = $top > 0 ? (int) round($points / $top * 100) : 0;
         }
 
         arsort($scores);
@@ -60,37 +60,5 @@ class InterestProfileService
         $rest = $topKeys->implode(', ');
 
         return "Según tus respuestas, tienes mayor afinidad con actividades relacionadas con {$rest} y {$last}. Esto es solo un punto de partida para explorar opciones, no una decisión tomada por ti.";
-    }
-
-    /**
-     * Máximo puntaje posible por eje de interés, sumando el mejor puntaje
-     * que cada pregunta puede aportar a ese eje (una opción por pregunta).
-     */
-    private function maxPossibleScores(): array
-    {
-        $labels = array_keys(config('interests.labels'));
-        $max = array_fill_keys($labels, 0);
-
-        $questions = Question::with('options')->get();
-
-        foreach ($questions as $question) {
-            $bestPerKey = [];
-
-            foreach ($question->options as $option) {
-                foreach ($option->interest_weights ?? [] as $key => $weight) {
-                    $bestPerKey[$key] = max($bestPerKey[$key] ?? 0, $weight);
-                }
-            }
-
-            foreach ($bestPerKey as $key => $weight) {
-                if (! array_key_exists($key, $max)) {
-                    $max[$key] = 0;
-                }
-
-                $max[$key] += $weight;
-            }
-        }
-
-        return $max;
     }
 }

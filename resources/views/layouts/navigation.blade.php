@@ -35,25 +35,42 @@
                             {{ __('Mi Ruta') }}
                         </x-nav-link>
                     @endauth
-                    <x-nav-link :href="route('compare.index')" :active="request()->routeIs('compare.*')">
-                        {{ __('Comparador') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('search.index')" :active="request()->routeIs('search.*')">
-                        {{ __('Buscar') }}
-                    </x-nav-link>
-                    @auth
-                        @if (auth()->user()->hasRole('admin'))
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                                {{ __('Administrador') }}
-                            </x-nav-link>
-                        @endif
-                    @endauth
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-4 sm:gap-1">
                 <x-theme-toggle />
+
+                @php
+                    $more = array_values(array_filter([
+                        ['compare.index', '⚖️', 'Comparador', 'Pon carreras lado a lado', true],
+                        ['cost-simulator.show', '💰', 'Simulador de costos', 'Calcula cuánto te costaría estudiar', auth()->check()],
+                        ['calendar.index', '📅', 'Calendario', 'Fechas de admisión y becas', true],
+                        ['search.index', '🔎', 'Buscar', 'Carreras e instituciones', true],
+                        ['interest-profile.show', '🧭', 'Mi perfil de intereses', 'Tus resultados del cuestionario', auth()->check()],
+                        ['favorites.index', '♥', 'Mis favoritos', 'Lo que has guardado', auth()->check()],
+                        ['admin.dashboard', '🛠️', 'Administrador', 'Panel de gestión', auth()->check() && auth()->user()->hasRole('admin')],
+                    ], fn ($i) => $i[4]));
+                @endphp
+                <x-dropdown align="right" width="w-72">
+                    <x-slot name="trigger">
+                        <button aria-label="Más opciones" class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-gray-600 transition hover:bg-gray-200/60 hover:text-gray-900 focus:outline-none dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100">
+                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        @foreach ($more as [$route, $icon, $title, $desc])
+                            <a href="{{ route($route) }}" class="flex items-center gap-3 px-3 py-2.5 transition hover:bg-emerald-50 dark:hover:bg-slate-700/60 {{ request()->routeIs(explode('.', $route)[0].'.*') ? 'bg-emerald-50/70 dark:bg-slate-700/40' : '' }}">
+                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-lg ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:ring-emerald-900">{{ $icon }}</span>
+                                <span class="min-w-0">
+                                    <span class="block text-sm font-medium text-gray-900 dark:text-slate-100">{{ $title }}</span>
+                                    <span class="block truncate text-xs text-gray-500 dark:text-slate-400">{{ $desc }}</span>
+                                </span>
+                            </a>
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
 
                 @auth
                     <x-dropdown align="right" width="48">
@@ -136,10 +153,15 @@
             <x-responsive-nav-link :href="route('compare.index')" :active="request()->routeIs('compare.*')">
                 {{ __('Comparador') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('calendar.index')" :active="request()->routeIs('calendar.*')">
+                {{ __('Calendario') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('search.index')" :active="request()->routeIs('search.*')">
                 {{ __('Buscar') }}
             </x-responsive-nav-link>
             @auth
+                <x-responsive-nav-link :href="route('cost-simulator.show')" :active="request()->routeIs('cost-simulator.*')">{{ __('Simulador de costos') }}</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('interest-profile.show')" :active="request()->routeIs('interest-profile.*')">{{ __('Mi perfil de intereses') }}</x-responsive-nav-link>
                 @if (auth()->user()->hasRole('admin'))
                     <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
                         {{ __('Administrador') }}

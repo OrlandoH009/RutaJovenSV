@@ -432,6 +432,8 @@ html.is-loading body > :not(#t-loader-bar):not(#t-loader-pill) { opacity: 0.72; 
     display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: bottom;
     font-variant-numeric: tabular-nums;
 }
+/* Dígitos y sufijo (%) en la misma línea: sin esto el "%" queda en la línea base y los dígitos más abajo. */
+[data-counter] { display: inline-flex; align-items: center; line-height: 1; }
 .t-digit-col { display: block; will-change: transform; }
 .t-digit-col > span { display: block; height: 1em; line-height: 1; }
 

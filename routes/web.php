@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\AcademicAreaController as AdminAcademicAreaController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\CalendarEventController as AdminCalendarEventController;
 use App\Http\Controllers\Admin\CareerController as AdminCareerController;
 use App\Http\Controllers\Admin\CurriculumController as AdminCurriculumController;
 use App\Http\Controllers\Admin\InstitutionController as AdminInstitutionController;
 use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Public\CalendarController;
 use App\Http\Controllers\Public\CareerController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\InstitutionController;
@@ -28,6 +30,7 @@ Route::get('/carreras/{career:slug}', [CareerController::class, 'show'])->name('
 Route::get('/instituciones', [InstitutionController::class, 'index'])->name('institutions.index');
 Route::get('/instituciones/{institution:slug}', [InstitutionController::class, 'show'])->name('institutions.show');
 Route::get('/buscar', [SearchController::class, 'index'])->name('search.index');
+Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/comparador', [CompareController::class, 'index'])->name('compare.index');
 
 // --- Estudiante (autenticado) ---
@@ -70,6 +73,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('institutions/{institution}/curriculum/{institutionCareer}', [AdminCurriculumController::class, 'updateName'])->name('institutions.curriculum.update-name');
     Route::post('institutions/{institution}/curriculum/{institutionCareer}/items', [AdminCurriculumController::class, 'storeItem'])->name('institutions.curriculum.items.store');
     Route::delete('institutions/{institution}/curriculum/{institutionCareer}/items/{item}', [AdminCurriculumController::class, 'destroyItem'])->name('institutions.curriculum.items.destroy');
+
+    Route::resource('calendar', AdminCalendarEventController::class)->parameters(['calendar' => 'event'])->except(['show']);
 
     Route::resource('questions', AdminQuestionController::class)->except(['show']);
     Route::post('questions/{question}/options', [AdminQuestionController::class, 'addOption'])->name('questions.options.add');

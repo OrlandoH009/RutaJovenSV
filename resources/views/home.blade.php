@@ -37,6 +37,57 @@
                 </svg>
 
                 <div class="relative grid items-center gap-6 sm:grid-cols-5">
+                    @auth
+                        @if ($profile)
+                            {{-- Con sesión y cuestionario hecho: su perfil real y la carrera que más concuerda --}}
+                            <div class="surface p-5 sm:col-span-2" data-float>
+                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-slate-400">Tu perfil de intereses</div>
+                                @foreach ($topInterests as $label => $pct)
+                                    <div class="mt-4">
+                                        <div class="mb-1 flex justify-between text-sm text-gray-700 dark:text-slate-300"><span>{{ $label }}</span><span>{{ $pct }}%</span></div>
+                                        <div class="h-2 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700"><div data-bar="{{ $pct }}" class="h-full rounded-full bg-emerald-500"></div></div>
+                                    </div>
+                                @endforeach
+                                <a href="{{ route('interest-profile.show') }}" class="mt-4 inline-flex text-sm font-medium text-emerald-600 hover:underline">Ver perfil completo →</a>
+                            </div>
+
+                            <div class="hidden sm:col-span-1 sm:block"></div>
+
+                            <div class="surface p-5 sm:col-span-2" data-float>
+                                <div class="text-xs font-medium uppercase tracking-wide text-emerald-600">La carrera que más concuerda contigo</div>
+                                @if ($bestCareer)
+                                    <div class="mt-2 flex items-center gap-3">
+                                        <x-career-icon :career="$bestCareer" size="h-12 w-12 text-2xl" />
+                                        <div class="min-w-0">
+                                            <div class="font-display text-2xl text-gray-900 dark:text-slate-100">{{ $bestCareer->name }}</div>
+                                            <div class="text-sm text-gray-500 dark:text-slate-400">{{ $bestCareer->academicArea?->name }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 text-sm text-emerald-700 dark:text-emerald-400">{{ $bestCareer->affinity_score }}% de afinidad con tu perfil</div>
+                                    <a href="{{ route('careers.show', $bestCareer) }}" class="mt-3 inline-flex text-sm font-medium text-emerald-600 hover:underline">Ver detalle →</a>
+                                @else
+                                    <div class="mt-2 font-display text-2xl text-gray-900 dark:text-slate-100">Aún sin coincidencias</div>
+                                    <a href="{{ route('careers.index') }}" class="mt-4 inline-flex text-sm font-medium text-emerald-600 hover:underline">Explorar carreras →</a>
+                                @endif
+                            </div>
+                        @else
+                            {{-- Con sesión pero sin cuestionario: invitar a hacerlo --}}
+                            <div class="surface p-5 sm:col-span-2" data-float>
+                                <div class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-slate-400">Tu perfil de intereses</div>
+                                <div class="mt-3 font-display text-2xl text-gray-900 dark:text-slate-100">Aún no lo tienes</div>
+                                <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">Responde unas preguntas rápidas y verás qué áreas te interesan más.</p>
+                            </div>
+
+                            <div class="hidden sm:col-span-1 sm:block"></div>
+
+                            <div class="surface p-5 sm:col-span-2" data-float>
+                                <div class="text-xs font-medium uppercase tracking-wide text-emerald-600">Primer paso</div>
+                                <div class="mt-2 font-display text-2xl text-gray-900 dark:text-slate-100">Haz el cuestionario</div>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">Con tus respuestas te mostramos las carreras que más concuerdan contigo.</p>
+                                <a href="{{ route('questionnaire.show') }}" class="btn-primary mt-4">Empezar cuestionario →</a>
+                            </div>
+                        @endif
+                    @else
                     <div class="surface p-5 sm:col-span-2" data-float>
                         <div class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-slate-400">Tu perfil de intereses</div>
                         @foreach ([['Tecnología', 86], ['Ciencias', 64], ['Arte y diseño', 42]] as [$label, $pct])
@@ -55,6 +106,7 @@
                         <div class="mt-1 text-sm text-gray-500 dark:text-slate-400">{{ $featuredCareers->first()?->academicArea?->name }}</div>
                         <a href="{{ $featuredCareers->first() ? route('careers.show', $featuredCareers->first()) : route('careers.index') }}" class="mt-4 inline-flex text-sm font-medium text-emerald-600 hover:underline">Ver detalle →</a>
                     </div>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -146,7 +198,7 @@
                 <p class="mt-2 text-sm text-gray-500 dark:text-slate-400">Estima matrícula y cuotas de cada institución y compáralas con claridad.</p>
             </div>
             <div class="space-y-4">
-                @foreach ([['Universidad pública', 30], ['Universidad privada', 78], ['Instituto técnico', 52]] as [$label, $pct])
+                @foreach ([['Universidad pública', 30], ['Universidad privada', 78]] as [$label, $pct])
                     <div>
                         <div class="mb-1 flex justify-between text-sm text-gray-700 dark:text-slate-300"><span>{{ $label }}</span></div>
                         <div class="h-2.5 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-700"><div data-bar="{{ $pct }}" class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400"></div></div>

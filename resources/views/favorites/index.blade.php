@@ -12,8 +12,13 @@
                     @forelse ($careers as $career)
                         <div data-animate="up" data-animate-group="fav-careers" class="surface card-hover relative">
                             <a href="{{ route('careers.show', $career) }}" class="block h-full p-5 pr-14">
-                                <div class="text-xs font-semibold uppercase tracking-wide text-emerald-600">{{ $career->academicArea?->name }}</div>
-                                <div class="mt-1 font-display text-xl text-gray-900 dark:text-slate-100">{{ $career->name }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-career-icon :career="$career" />
+                                    <div class="min-w-0">
+                                        <div class="text-xs font-semibold uppercase tracking-wide text-emerald-600">{{ $career->academicArea?->name }}</div>
+                                        <div class="mt-0.5 font-display text-xl text-gray-900 dark:text-slate-100">{{ $career->name }}</div>
+                                    </div>
+                                </div>
                             </a>
                             <x-like-button :action="route('favorites.careers.toggle', $career)" :liked="true" class="absolute right-3 top-3" />
                         </div>
@@ -29,8 +34,13 @@
                     @forelse ($institutions as $institution)
                         <div data-animate="up" data-animate-group="fav-institutions" class="surface card-hover relative">
                             <a href="{{ route('institutions.show', $institution) }}" class="block h-full p-5 pr-14">
-                                <div class="text-xs font-semibold uppercase tracking-wide text-emerald-600">{{ $institution->institution_type }}</div>
-                                <div class="mt-1 font-display text-xl text-gray-900 dark:text-slate-100">{{ $institution->name }}</div>
+                                <div class="flex items-center gap-3">
+                                    <x-institution-logo :institution="$institution" />
+                                    <div class="min-w-0">
+                                        <div class="text-xs font-semibold uppercase tracking-wide text-emerald-600">{{ $institution->institution_type }}</div>
+                                        <div class="mt-0.5 font-display text-xl text-gray-900 dark:text-slate-100" title="{{ $institution->name }}">{{ $institution->short_name }}</div>
+                                    </div>
+                                </div>
                             </a>
                             <x-like-button :action="route('favorites.institutions.toggle', $institution)" :liked="true" class="absolute right-3 top-3" />
                         </div>

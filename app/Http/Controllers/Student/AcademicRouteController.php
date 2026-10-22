@@ -12,12 +12,27 @@ class AcademicRouteController extends Controller
     {
         $route = $request->user()->academicRoute ?? new AcademicRoute(['next_steps' => []]);
 
+        $unavailableCareerIds = [];
+
         if ($route->exists) {
             $route->load('items.career', 'items.institution');
+
+            // Carreras elegidas que ninguna de las instituciones elegidas ofrece (solo si ya eligió instituciones).
+            $institutionIds = $route->items->pluck('institution_id')->filter();
+
+            if ($institutionIds->isNotEmpty()) {
+                $unavailableCareerIds = $route->items->pluck('career_id')->filter()
+                    ->reject(fn ($careerId) => \DB::table('institution_careers')
+                        ->where('career_id', $careerId)
+                        ->whereIn('institution_id', $institutionIds)
+                        ->exists())
+                    ->all();
+            }
         }
 
         return view('my-route.show', [
             'route' => $route,
+            'unavailableCareerIds' => $unavailableCareerIds,
             'savedCareers' => $request->user()->savedCareers()->with('career')->get(),
             'savedInstitutions' => $request->user()->savedInstitutions()->with('institution')->get(),
         ]);

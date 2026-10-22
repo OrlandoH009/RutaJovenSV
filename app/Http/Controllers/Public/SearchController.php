@@ -23,7 +23,9 @@ class SearchController extends Controller
                 ->limit(10)
                 ->get();
 
-            $institutions = Institution::where('name', 'like', "%{$query}%")
+            $institutions = Institution::higherEducation()->whereNull('parent_id')
+                ->where(fn ($q) => $q->where('name', 'like', "%{$query}%")
+                    ->orWhereHas('campuses', fn ($q2) => $q2->where('name', 'like', "%{$query}%")))
                 ->limit(10)
                 ->get();
         }

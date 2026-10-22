@@ -29,7 +29,7 @@ class CareerController extends Controller
 
     public function show(Career $career, RecommendationService $recommendations)
     {
-        $career->load(['academicArea', 'interestWeights', 'institutions']);
+        $career->load(['academicArea', 'interestWeights', 'institutions' => fn ($q) => $q->higherEducation()]);
 
         $curriculumByPivotId = CurriculumItem::whereIn('institution_career_id', $career->institutions->pluck('pivot.id'))
             ->orderByRaw('cycle_number IS NULL, cycle_number')

@@ -73,25 +73,40 @@
                             <p class="text-xs text-gray-400 dark:text-slate-500 mb-4">Las carreras e instituciones que quieres seguir de cerca.</p>
 
                             @if ($route->exists && $route->items->isNotEmpty())
-                                <ul class="space-y-2 mb-6">
-                                    @foreach ($route->items as $item)
-                                        <li data-animate="up" data-animate-group="route-items"
-                                            class="card-hover flex items-center justify-between gap-3 p-3 rounded-lg border-l-4 {{ $item->career ? 'border-emerald-400 bg-emerald-50/40 dark:bg-emerald-950/30' : 'border-teal-400 bg-teal-50/40 dark:bg-teal-950/30' }} border border-gray-100 dark:border-slate-700">
-                                            <div class="flex items-center gap-3 min-w-0">
-                                                <span class="text-xl">{{ $item->career ? '🎓' : '🏫' }}</span>
-                                                <div class="min-w-0">
-                                                    <span class="font-medium text-gray-900 dark:text-slate-100">{{ $item->career->name ?? $item->institution->name }}</span>
-                                                    <div class="text-xs text-gray-500 dark:text-slate-400">{{ $item->career ? 'Carrera' : 'Institución' }}</div>
-                                                </div>
-                                            </div>
-                                            <form method="POST" action="{{ route('my-route.items.remove', $item) }}" class="shrink-0" data-confirm="¿Quitar esto de tu ruta?">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-sm text-gray-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition">Quitar</button>
-                                            </form>
-                                        </li>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                                    @foreach ([['Carreras', '🎓', $route->items->whereNotNull('career_id'), 'No has agregado carreras.'], ['Instituciones', '🏫', $route->items->whereNotNull('institution_id'), 'No has agregado instituciones.']] as [$title, $icon, $group, $emptyText])
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">{{ $title }}</h4>
+                                            <ul class="space-y-2">
+                                                @forelse ($group as $item)
+                                                    @php $unavailable = in_array($item->career_id, $unavailableCareerIds); @endphp
+                                                    <li data-animate="up" data-animate-group="route-items"
+                                                        class="card-hover p-3 rounded-lg border-l-4 {{ $item->career ? 'border-emerald-400 bg-emerald-50/40 dark:bg-emerald-950/30' : 'border-teal-400 bg-teal-50/40 dark:bg-teal-950/30' }} border border-gray-100 dark:border-slate-700">
+                                                        <div class="flex items-center justify-between gap-3">
+                                                            <div class="flex items-center gap-3 min-w-0">
+                                                                <span class="text-xl">{{ $icon }}</span>
+                                                                <span class="font-medium text-gray-900 dark:text-slate-100">{{ $item->career->name ?? $item->institution->name }}</span>
+                                                            </div>
+                                                            <form method="POST" action="{{ route('my-route.items.remove', $item) }}" class="shrink-0" data-confirm="¿Quitar esto de tu ruta?">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="text-sm text-gray-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition">Quitar</button>
+                                                            </form>
+                                                        </div>
+                                                        @if ($unavailable)
+                                                            <div class="mt-2 flex items-start gap-2 rounded-md bg-amber-50 px-2.5 py-1.5 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                                                                <span aria-hidden="true">⚠️</span>
+                                                                <span>No está disponible en ninguna de las instituciones que elegiste.</span>
+                                                            </div>
+                                                        @endif
+                                                    </li>
+                                                @empty
+                                                    <li class="rounded-lg border-2 border-dashed border-gray-200 p-3 text-center text-sm text-gray-400 dark:border-slate-700 dark:text-slate-500">{{ $emptyText }}</li>
+                                                @endforelse
+                                            </ul>
+                                        </div>
                                     @endforeach
-                                </ul>
+                                </div>
                             @else
                                 <div class="text-center py-6 mb-6 rounded-lg border-2 border-dashed border-gray-200 dark:border-slate-700">
                                     <div class="text-2xl mb-1">🧐</div>

@@ -39,9 +39,14 @@
                 @forelse ($institutions as $institution)
                     <a href="{{ route('institutions.show', $institution) }}" data-animate="up" data-animate-group="institutions"
                         class="card-hover block p-5 bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700 shadow-sm hover:border-emerald-200 dark:hover:border-emerald-700 transition">
-                        <div class="font-semibold text-gray-900 dark:text-slate-100">{{ $institution->name }}</div>
-                        <div class="text-sm text-gray-500 dark:text-slate-400 mt-1">{{ $institution->institution_type }} · {{ $institution->department }}</div>
-                        <div class="text-xs text-emerald-600 dark:text-emerald-400 mt-3">{{ $institution->careers_count }} carreras registradas</div>
+                        <div class="flex items-center gap-3">
+                            <x-institution-logo :institution="$institution" />
+                            <div class="min-w-0">
+                                <div class="font-semibold text-gray-900 dark:text-slate-100" title="{{ $institution->name }}">{{ $institution->short_name }}</div>
+                                <div class="text-sm text-gray-500 dark:text-slate-400 mt-0.5">{{ $institution->institution_type }} · {{ $institution->department }}</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-emerald-600 dark:text-emerald-400 mt-3">{{ $institution->family_careers->count() }} carreras registradas{{ $institution->campuses->isNotEmpty() ? ' · '.($institution->campuses->count() + 1).' campus' : '' }}</div>
                     </a>
                 @empty
                     <p class="text-gray-500 dark:text-slate-400 col-span-full">No se encontraron instituciones con esos filtros.</p>

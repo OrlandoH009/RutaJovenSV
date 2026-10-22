@@ -37,6 +37,10 @@ class CostSimulatorController extends Controller
             'months' => $validated['months'],
         ];
 
+        if ($request->expectsJson()) {
+            return response()->json($result);
+        }
+
         return view('cost-simulator.show', ['result' => $result, 'input' => $validated]);
     }
 }

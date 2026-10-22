@@ -89,6 +89,7 @@ class InstitutionController extends Controller
     private function validated(Request $request, ?int $ignoreId = null): array
     {
         $validated = $request->validate([
+            'parent_id' => ['nullable', 'exists:institutions,id'],
             'name' => ['required', 'string', 'max:255'],
             'department' => ['nullable', 'string', 'max:100'],
             'municipality' => ['nullable', 'string', 'max:100'],

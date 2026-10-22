@@ -31,6 +31,15 @@
                     </div>
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Campus de (opcional)</label>
+                    <select name="parent_id" class="w-full rounded-md border-gray-300 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                        <option value="">— Es una universidad principal —</option>
+                        @foreach (\App\Models\Institution::whereNull('parent_id')->where('id', '!=', $institution->id ?? 0)->orderBy('name')->get() as $parentOption)
+                            <option value="{{ $parentOption->id }}" @selected(old('parent_id', $institution->parent_id) == $parentOption->id)>{{ $parentOption->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Tipo de institución</label>
